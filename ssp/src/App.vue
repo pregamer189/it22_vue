@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 
 const score = ref({ spelare: 0, dator: 0 })
-const resultat = ref('Du vann!')
+const resultat = ref('Let´s begin!')
 
 function spelarval(e) {
     let buttons = document.getElementsByClassName('alternativ')
@@ -12,6 +12,7 @@ function spelarval(e) {
     }
     e.target.classList.add('spelarval')
     datorval()
+    hittaVinnare()
 }
 
 function datorval() {
@@ -25,6 +26,42 @@ function datorval() {
             b.classList.add('datorval')
             b.title = "Datorns val"
         }
+    }
+}
+
+function hittaVinnare() {
+    let buttons = document.getElementsByClassName('alternativ')
+    for (let b of buttons) {
+        if (b.classList.contains('spelarval')) {
+            var spelarval = b.textContent
+        }
+        if (b.classList.contains('datorval')) {
+            var datorval = b.textContent
+        }
+    }
+    if (spelarval === datorval) {
+        resultat.value = "Oavgjort!"
+    } else if (spelarval === 'Sten' && datorval === 'Sax' ||
+        spelarval === 'Sax' && datorval === 'Påse' ||
+        spelarval === 'Påse' && datorval === 'Sten'
+    ) {
+        resultat.value = "DU vann!"
+        score.value.spelare++
+    } else {
+        resultat.value = "Du förlorade!"
+        score.value.dator++
+    }
+
+}
+
+function reset() {
+    score.value.spelare = 0
+    score.value.dator = 0
+    resultat.value = "Let´s begin!"
+    let buttons = document.getElementsByClassName('alternativ')
+    for (let b of buttons) {
+        b.classList.remove('spelarval')
+        b.classList.remove('datorval')
     }
 }
 </script>
@@ -46,6 +83,9 @@ function datorval() {
             <p>
                 <span id="spelare">{{ score.spelare }}</span> - <span id="dator">{{ score.dator }}</span>
             </p>
+        </div>
+        <div class="score">
+            <button id="nolla" @click="reset">Nollställ poängen</button>
         </div>
     </main>
 </template>
@@ -88,5 +128,11 @@ button.spelarval {
 
 button.datorval {
     border: red solid 2px;
+}
+
+#nolla {
+    margin-top: 2em;
+    padding: .3em .6em;
+    font-size: .8em;
 }
 </style>
