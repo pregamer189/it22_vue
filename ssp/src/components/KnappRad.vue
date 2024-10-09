@@ -1,35 +1,36 @@
 <script setup>
 import { ref } from 'vue';
 
+const props = defineProps(['knappar'])
+const emit = defineEmits(['valdaKnappar'])
 
-const knappar = ref(['Sten', 'Sax', 'Påse'])
 function spelarval(e) {
     let buttons = document.getElementsByClassName('alternativ')
     for (let b of buttons) {
         b.classList.remove('spelarval')
     }
     e.target.classList.add('spelarval')
-    datorval()
+    emit('valdaKnappar', { spelare: e.target.textContent, dator: datorval() })
 }
 
 function datorval() {
-    let val = Math.floor(Math.random() * 3)
-    let alternativ = ['Sten', 'Sax', 'Påse']
+    let val = Math.floor(Math.random() * props.knappar.length)
     let buttons = document.getElementsByClassName('alternativ')
     for (let b of buttons) {
         b.classList.remove('datorval')
         b.title = ''
-        if (b.textContent === alternativ[val]) {
+        if (b.textContent === props.knappar[val]) {
             b.classList.add('datorval')
             b.title = "Datorns val"
         }
     }
+    return props.knappar[val]
 }
 
 </script>
 <template>
     <div class="knapprad">
-        <button v-for="knapp in knappar" class="alternativ" :key="knapp" @click="spelarval">
+        <button v-for="knapp in props.knappar" class="alternativ" :key="knapp" @click="spelarval">
             {{ knapp }}
         </button>
     </div>
