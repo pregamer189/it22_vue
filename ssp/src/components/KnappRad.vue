@@ -1,5 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps, watch } from 'vue';
+
+const props = defineProps(['knappar', 'reset']);
+
+watch(() => props.reset, () => {
+    if (props.reset) {
+        let buttons = document.getElementsByClassName('alternativ')
+        for (let b of buttons) {
+            b.classList.remove('spelarval')
+            b.classList.remove('datorval')
+            b.title = ''
+        }
+    }
+})
 
 
 const knappar = ref(['Sten', 'Sax', 'Påse'])

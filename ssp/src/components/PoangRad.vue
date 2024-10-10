@@ -3,19 +3,15 @@ import { ref, watch } from 'vue';
 
 const props = defineProps(['vinnare']);
 const score = ref({ spelare: 0, dator: 0 })
-const localVinnare = ref('')
-
 watch(props, () => {
-    localVinnare.value = props.vinnare
-})
-watch(localVinnare, () => {
-    if (localVinnare.value === 'spelare') {
+    if (props.vinnare === 'spelare') {
         score.value.spelare++
-    } else if (localVinnare.value === 'dator') {
+    } else if (props.vinnare === 'dator') {
         score.value.dator++
     }
-    localVinnare.value = ''
+    props.vinnare = ''
 })
+
 
 
 </script>

@@ -3,45 +3,13 @@ import { ref } from 'vue';
 import KnappRad from './components/KnappRad.vue';
 
 
-const score = ref({ spelare: 0, dator: 0 })
 const resultat = ref('Let´s begin!')
+const vinnare = ref('')
+const reset = ref(true)
 
 
-function hittaVinnare() {
-    let buttons = document.getElementsByClassName('alternativ')
-    for (let b of buttons) {
-        if (b.classList.contains('spelarval')) {
-            var spelarval = b.textContent
-        }
-        if (b.classList.contains('datorval')) {
-            var datorval = b.textContent
-        }
-    }
-    if (spelarval === datorval) {
-        resultat.value = "Oavgjort!"
-    } else if (spelarval === 'Sten' && datorval === 'Sax' ||
-        spelarval === 'Sax' && datorval === 'Påse' ||
-        spelarval === 'Påse' && datorval === 'Sten'
-    ) {
-        resultat.value = "DU vann!"
-        score.value.spelare++
-    } else {
-        resultat.value = "Du förlorade!"
-        score.value.dator++
-    }
 
-}
 
-function reset() {
-    score.value.spelare = 0
-    score.value.dator = 0
-    resultat.value = "Let´s begin!"
-    let buttons = document.getElementsByClassName('alternativ')
-    for (let b of buttons) {
-        b.classList.remove('spelarval')
-        b.classList.remove('datorval')
-    }
-}
 </script>
 
 <template>
