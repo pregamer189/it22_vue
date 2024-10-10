@@ -9,9 +9,14 @@ watch(props, () => {
     } else if (props.vinnare === 'dator') {
         score.value.dator++
     }
-    props.vinnare = ''
 })
 
+watch(() => props.reset, () => {
+    if (props.reset) {
+        score.value.spelare = 0
+        score.value.dator = 0
+    }
+})
 
 
 </script>

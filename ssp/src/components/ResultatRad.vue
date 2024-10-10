@@ -34,6 +34,9 @@ watch(props, () => {
         }
     }
 })
+
+
+
 </script>
 <template>
     <div class="resultat">
