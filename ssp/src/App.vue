@@ -8,7 +8,17 @@ const vinnare = ref('')
 const reset = ref(true)
 
 
+function hittaVinnare() {
+    vinnare.value = ''
+    let spelare = knappar.value.indexOf(valdaknappar.value)
 
+}
+
+<button id="nolla" @click="reset = true"> 
+
+    function hittaVinnare(valdaKnappar) {
+    reset.value = false
+}
 
 </script>
 
