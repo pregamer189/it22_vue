@@ -1,10 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue';
 
-<<<<<<< HEAD
-const props = defineProps(['valdaknappar']);
-const emit = defineEmits(['vinnare']);
-
 =======
 const props = defineProps(['valdaKnappar'])
 const emit = defineEmits(['vinnare'])
@@ -50,4 +46,3 @@ watch(props, () => {
     margin: 1.2em 0;
 }
 </style>
->>>>>>> f53363dd8b173861a11dac701017c010058eb527
