@@ -1,3 +1,7 @@
+<script setup>
+document.title = "Elias sida"
+</script>
+
 <template>
     <h1>Elias</h1>
     <p>Det här är en sida som jag skapat alldelens själv</p><br>

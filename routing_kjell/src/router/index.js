@@ -40,5 +40,5 @@ export default router
 
 
 router.beforeEach((to) => {
-  document.title = to.meta.title ?? "Default title";
+  document.title = to.meta?.title ?? "Default title";
 });
