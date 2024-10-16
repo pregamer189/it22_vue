@@ -32,12 +32,13 @@ onMounted(() => {
     margin: 0 1em;
 }
 
-p {
-    color: black;
-}
+
 
 h2 {
-    color: black;
     text-align: center;
+}
+
+p {
+   color : lightgray;
 }
 </style>

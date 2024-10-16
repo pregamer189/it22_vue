@@ -1,9 +1,10 @@
 <script setup>
-const props = defineProps(['forecast'])
-
-
 import wc from '@/assets/data/weatherCodes.json'
 import { ref } from 'vue';
+import { defineProps } from 'vue';
+
+
+const props = defineProps(['forecast'])
 const weatherCodes = ref(wc);
 
 function getText(code) {
@@ -12,7 +13,6 @@ function getText(code) {
     }).description ?? 'Unknown'
     return wcText
 }
-
 
 </script>
 <style scoped>
@@ -38,9 +38,6 @@ li {
     color: black;
 }
 
-p {
-    color: black;
-}
 
 </style>
 
@@ -52,11 +49,14 @@ p {
         <li>Precip</li>
         <li>Wind</li>
     </ul>
-    <ul v-for="day in props.forecast.weather" :key="day">
-        <li>{{ new Date(day.date).getDate()  }}.{{ new Date(day.date).getMonth() + 1}}</li>
-        <li>{{ getText(day.code) }}</li>
-        <li>{{ day.temp.min }} - {{ day.temp.max }}{{ day.temp.unit }} </li>
-        <li>{{ day.precipitation.sum }}{{ day.precipitation.unit }}<br>({{ day.precipitation.probability }}%) </li>
-        <li>{{ Math.round(day.wind.speed) }} ({{ Math.round(day.wind.gusts) }}){{ day.wind.unit }}<br>{{ day.wind.direction }}{{ day.wind.direction_unit }}</li>
-    </ul>
+        <div v-if="props.forecast && props.forecast.weather">
+            <ul v-for="day in props.forecast.weather" :key="day">
+                <li>{{ new Date(day.date).getDate()  }}.{{ new Date(day.date).getMonth() + 1}}</li>
+                <li>{{ getText(day.code) }}</li>
+                <li>{{ day.temp.min }} - {{ day.temp.max }}{{ day.temp.unit }} </li>
+                <li>{{ day.precipitation.sum }}{{ day.precipitation.unit }}<br>({{ day.precipitation.probability }}%) </li>
+                <li>{{ Math.round(day.wind.speed) }} ({{ Math.round(day.wind.gusts) }}){{ day.wind.unit }}<br>{{ day.wind.direction }}{{ day.wind.direction_unit }}</li>
+            </ul>
+        </div>
+    <p v-else>No forecast data available.</p>
 </template>

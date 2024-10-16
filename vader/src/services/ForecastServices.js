@@ -12,6 +12,7 @@ export function getForecast(location) {
             .then(data => {
                 resolve(transformData(data))
             })
+            .catch(error => reject(error))
     })
  
 }

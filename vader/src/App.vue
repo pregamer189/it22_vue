@@ -21,6 +21,9 @@ import { RouterLink, RouterView } from 'vue-router';
           <li>
             <RouterLink to="/contact">Contact</RouterLink>
           </li>
+          <li>
+            <RouterLink to="/locations">Locations</RouterLink>
+          </li>
         </ul>
       </nav>
     </div>
