@@ -45,7 +45,7 @@ const goToForecast = (location) => {
     <hr>
     <h3>List</h3>
         <ul>
-            <li v-for="loc in locationsList" :key="loc" :class="loc.default ? 'default' : ''">
+            <li v-for="(loc, index) in locationsList" :key="loc" :class="loc.default ? 'default' : ''">
                 <span @click="goToForecast(loc)">
                     {{ loc.name }}
                     ( {{ Math.abs(loc.position.lat).toFixed(2) }}°{{ loc.position.lat > 0 ? 'N' : 'S' }}
