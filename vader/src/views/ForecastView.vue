@@ -1,29 +1,52 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { getForecast } from '@/services/ForecastServices';
-import { onMounted } from 'vue'
 import ForecastResult from '@/components/ForecastResult.vue'
-const location = ref({ lat: 60.0, long: 20.0, name: 'Nuvarande position' })
+const currentLocation = ref({ lat: 60.0, long: 20.0, name: 'Nuvarande position' })
 const info = ref({})
-onMounted(() => {
-    getForecast(location.value)
+const props = defineProps(['location'])
+
+
+
+
+watchEffect(() => {
+    let locationsList = JSON.parse(localStorage.getItem('locations'))
+    if (props.location) {
+        currentLocation.value = locationsList.find(loc => {
+            return loc.name.toLocaleLowerCase() === props.location.toLocaleLowerCase()
+        }) 
+    }
+    else {
+        currentLocation.value = locationsList.find(loc => {
+            return loc.default
+        })
+    }
+
+    getForecast(currentLocation.value)
         .then(response => {
             info.value = response
         })
         .catch(err => {
-            console.error(err)
+            console.log(err)
         })
 })
 
-
-
 </script>
-<template>
-    <h2>{{ location.name }}</h2>
-    <p class="location"> <span>Lat: {{ location.lat.toFixed(3) }}</span></p>
-    <p class="location"> <span>Long: {{ location.long.toFixed(3) }}</span></p> 
-    <ForecastResult :forecast="info" />
 
+
+<template>
+    <template v-if="currentLocation">
+        <h2>Angiven plats saknas</h2>
+        <p> {{ props.location }} finns inte i listan över platser</p>
+    </template>
+    <template v-else>
+        <h2>{{ currentLocation.name }}</h2>
+        <p class="location">Lat: <span> {{ currentLocation.position.lat.toFixed(3) }} 
+</span></p>
+        <p class="location">Long: <span> {{ currentLocation.position.long.toFixed(3) }}
+</span></p>
+        <ForecastResult :forecast="info" />    
+    </template>
 </template>
 
 <style scoped>
