@@ -1,27 +1,25 @@
 <script setup>
 import router from '@/router';
-import { ref } from 'vue';
-import { onMounted } from 'vue';
-
+import { onMounted, ref } from 'vue';
 
 const location = ref({ name: '', position: { lat: 0, long: 0 }, default: false })
 const locationsList = ref([])
-
 onMounted(() => {
-    locationsList.value = JSON.parse(localStorage.getItem('locations'))
+    locationsList.value = JSON.parse(localStorage.getItem("locations"))
 })
 
-
 function saveLocation() {
+    if (!locationsList.value) {
+        locationsList.value = [];
+    }
     let locations = locationsList.value.filter(loc => {
         return loc.name.toLocaleLowerCase().trim() != location.value.name.toLocaleLowerCase().trim()
-    })
-    locations.push(location.value)
-    locationsList.value = locations
-    setLocation(location.value, false)
-    resetLocation()
-    localStorage.setItem('locations', JSON.stringify(locationsList.value))
-    
+    });
+    locations.push(location.value);
+    locationsList.value = locations;
+    setLocation(location.value, false);
+    resetLocation();
+    localStorage.setItem("locations", JSON.stringify(locationsList.value));
 }
 
 function resetLocation() {
@@ -35,7 +33,7 @@ function removeLocation(location) {
     if (location.default && locationsList.value.length > 0) {
         locationsList.value[0].default = true
     }
-    localStorage.setItem('locations', JSON.stringify(locationsList.value))
+    localStorage.setItem("locations", JSON.stringify(locationsList.value))
 }
 
 function setLocation(location, navigate) {
@@ -45,21 +43,11 @@ function setLocation(location, navigate) {
     locationsList.value.map(itm => {
         itm.default = (itm === location)
     })
+    localStorage.setItem("locations", JSON.stringify(locationsList.value))
     if (navigate) {
-        router.push(`/${location.name}`)
+        router.push(`/forecast/${location.name}`)
     }
-    localStorage.setItem('locations', JSON.stringify(locationsList.value))
 }
-
-function defaultLocation(loc) {
-    locationsList.value.forEach((location) => {
-    location.default = false
-  })
-  loc.default = true 
-  localStorage.setItem("locations", JSON.stringify(locationsList.value))
-  router.push('/forecast/${location.value.name}')
-}
-
 </script>
 <template>
     <h2>Locations</h2>
@@ -77,7 +65,6 @@ function defaultLocation(loc) {
             ({{ Math.abs(loc.position?.lat ?? 0).toFixed(2) }}°{{ loc.position?.lat > 0 ? 'N' : 'S' }}
             {{ Math.abs(loc.position?.long ?? 0).toFixed(2) }}°{{ loc.position?.long > 0 ? 'E' : 'W' }})
             <span class="remove" @click="removeLocation(loc)">x</span>
-            <button @click="defaultLocation(loc)">Set Default</button>
         </li>
     </ul>
 </template>
@@ -109,6 +96,7 @@ li {
     list-style: none;
     background-color: aqua;
     cursor: pointer;
+    color : black;
 }
 
 li:nth-child(even) {
@@ -127,4 +115,3 @@ li:nth-child(even) {
     cursor: pointer;
 }
 </style>
-
