@@ -6,8 +6,6 @@ import ForecastResult from '@/components/ForecastResult.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    
-    
     {
       path: '/',
       name: 'home',
@@ -16,23 +14,21 @@ const router = createRouter({
     {
       path: '/locations',
       name: 'locations',
-      component: LocationsView, 
+      component: LocationsView,
     },
     {
       path: '/forecast/:location',
       name: 'forecast',
       component: ForecastView,
-      props: true
+      props: true,
     },
-    
+
     {
       path: '/locations/:location',
       name: 'ForecastResult',
       component: ForecastResult,
-      props: true
+      props: true,
     },
-
-
   ],
 })
 

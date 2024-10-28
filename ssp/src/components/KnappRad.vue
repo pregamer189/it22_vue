@@ -1,23 +1,6 @@
 <script setup>
-<<<<<<< HEAD
-import { ref, defineProps, watch } from 'vue';
-
-const props = defineProps(['knappar', 'reset']);
-
-watch(() => props.reset, () => {
-    if (props.reset) {
-        let buttons = document.getElementsByClassName('alternativ')
-        for (let b of buttons) {
-            b.classList.remove('spelarval')
-            b.classList.remove('datorval')
-            b.title = ''
-        }
-    }
-})
-=======
 const props = defineProps(['knappar'])
 const emit = defineEmits(['valdaKnappar'])
->>>>>>> f53363dd8b173861a11dac701017c010058eb527
 
 function spelarval(e) {
     let buttons = document.getElementsByClassName('alternativ')
