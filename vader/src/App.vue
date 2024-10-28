@@ -1,9 +1,22 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import BurgerMenu from './components/BurgerMenu.vue';
+
+onMounted(() => {
+    let locations = JSON.parse(localStorage.getItem('locations'))
+    if (!locations) {
+        locations = [{ name: 'Mariehamn', position: { lat: 60, long: 20 }, default: true }]
+        localStorage.setItem('locations', JSON.stringify(locations))
+    }
+})
+
+
+const menuActive = ref(false)
 </script>
 
 <template>
     <header>
-
+        <BurgerMenu @toggle-menu="menuActive = !menuActive" :active="menuActive" />
         <nav>
             <RouterLink to="/">Home</RouterLink>
             <RouterLink to="/locations">Locations</RouterLink>

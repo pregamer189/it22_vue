@@ -1,25 +1,48 @@
 <script setup>
 import router from '@/router';
+import { getPosition } from '@/services/positioningService';
 import { onMounted, ref } from 'vue';
 
 const location = ref({ name: '', position: { lat: 0, long: 0 }, default: false })
 const locationsList = ref([])
 onMounted(() => {
     locationsList.value = JSON.parse(localStorage.getItem("locations"))
+
+    let current = locationsList.value.find(loc => {
+        return loc.name = "Current location"
+    })
+    if (!current) {
+        current = { name: 'Current location', position: { lat: 0, long: 0 }, default: false }
+        locationsList.value.unshift(current)
+    }
+
+    getPosition()
+        .then(response => {
+            current.position = response.position
+            let index = locationsList.value.findIndex(loc => {
+                return loc.name === "Current location"
+            })
+            locationsList.value.splice(index, 1, current)
+            localStorage.setItem("locations", JSON.stringify(locationsList.value))
+        })
+        .catch(err => {
+            let index = locationsList.value.find(loc => {
+                loc.name === "Current location"
+            })
+            locationsList.value.splice(index, 1)
+            console.log(err)
+        })
 })
 
 function saveLocation() {
-    if (!locationsList.value) {
-        locationsList.value = [];
-    }
     let locations = locationsList.value.filter(loc => {
         return loc.name.toLocaleLowerCase().trim() != location.value.name.toLocaleLowerCase().trim()
-    });
-    locations.push(location.value);
-    locationsList.value = locations;
-    setLocation(location.value, false);
-    resetLocation();
-    localStorage.setItem("locations", JSON.stringify(locationsList.value));
+    })
+    locations.push(location.value)
+    locationsList.value = locations
+    setLocation(location.value, false)
+    resetLocation()
+    localStorage.setItem("locations", JSON.stringify(locationsList.value))
 }
 
 function resetLocation() {
@@ -64,7 +87,7 @@ function setLocation(location, navigate) {
             {{ loc.name }}
             ({{ Math.abs(loc.position?.lat ?? 0).toFixed(2) }}°{{ loc.position?.lat > 0 ? 'N' : 'S' }}
             {{ Math.abs(loc.position?.long ?? 0).toFixed(2) }}°{{ loc.position?.long > 0 ? 'E' : 'W' }})
-            <span class="remove" @click="removeLocation(loc)">x</span>
+            <span class="remove" @click="removeLocation(loc)" v-show="loc.name !== 'Current location'">x</span>
         </li>
     </ul>
 </template>
@@ -96,7 +119,6 @@ li {
     list-style: none;
     background-color: aqua;
     cursor: pointer;
-    color : black;
 }
 
 li:nth-child(even) {
