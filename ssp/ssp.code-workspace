@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../SecondApp"
+		},
+		{
+			"path": "../../Sites/localhost"
+		},
+		{
+			"path": "../../workoutapi/workoutapi/workouts"
+		}
+	],
+	"settings": {}
+}
